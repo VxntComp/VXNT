@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VXNT - </title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: #fff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: #000;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            color: #fff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #fff;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .cart-icon:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #fff;
+            color: #000;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            font-size: 11px;
+            font-weight: 600;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect width="1200" height="800" fill="%23111"/><path d="M0,400 Q300,200 600,400 T1200,400 V800 H0 Z" fill="%23222"/></svg>') center/cover;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: clamp(48px, 8vw, 120px);
+            font-weight: 900;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+            line-height: 0.9;
+            background: linear-gradient(45deg, #fff, #999);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 18px;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            padding: 18px 40px;
+            background: #fff;
+            color: #000;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 0;
+            transition: all 0.3s ease;
+            border: 2px solid #fff;
+        }
+
+        .hero-cta:hover {
+            background: transparent;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        /* PRODUCTS SECTION */
+        .products-section {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 60px;
+            letter-spacing: -1px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #333, #111);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .product-card:hover .product-image::before {
+            transform: translateX(100%);
+        }
+
+        .product-info {
+            padding: 30px;
+        }
+
+        .product-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .product-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .product-description {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        .product-buttons {
+            display: flex;
+            gap: 10px;
+            flex-direction: column;
+        }
+
+        .btn {
+            padding: 15px 25px;
+            border: none;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        .btn-primary {
+            background: #fff;
+            color: #000;
+            border: 2px solid #fff;
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* ABOUT SECTION */
+        .about-section {
+            padding: 100px 20px;
+            background: rgba(255, 255, 255, 0.02);
+            text-align: center;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .about-text {
+            font-size: 18px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 40px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .feature {
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .feature:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .feature-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* FOOTER */
+        .footer {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 60px 20px 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-section h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 14px;
+            line-height: 1.8;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #fff;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: #fff;
+            color: #000;
+            transform: translateY(-2px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 12px;
+        }
+
+        /* MOBILE RESPONSIVE */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 48px;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .product-buttons {
+                flex-direction: column;
+            }
+        }
+
+        /* LOADING ANIMATION */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        /* MODAL STYLES */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(20, 20, 20, 0.95);
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.6);
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header class="header">
+            <div class="nav-container">
+                <div class="logo">VXNT</div>
+                <nav class="nav-links">
+                    <a href="#home" class="nav-link">Home</a>
+                    <a href="#products" class="nav-link">Produtos</a>
+                    <a href="#about" class="nav-link">Sobre</a>
+                    <a href="#contact" class="nav-link">Contato</a>
+                </nav>
+                <div class="cart-icon" onclick="showCart()">
+                    🛒
+                    <span class="cart-count" id="cart-count">0</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- HERO SECTION -->
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>VXNT</h1>
+                <p>Streetwear exclusivo para quem não segue padrões</p>
+                <a href="#products" class="hero-cta">Explorar Coleção</a>
+            </div>
+        </section>
+
+        <!-- PRODUCTS SECTION -->
+        <section id="products" class="products-section">
+            <h2 class="section-title">NOVA COLEÇÃO</h2>
+            <div class="products-grid">
+                <div class="product-card fade-in">
+                    <div class="product-image">
+                        👕
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">OVERSIZED TEE</h3>
+                        <div class="product-price">R$ 149,90</div>
+                        <p class="product-description">Camiseta oversized premium com estampa exclusiva. 100% algodão pré-lavado.</p>
+                        <div class="product-buttons">
+                            <button class="btn btn-primary" onclick="addToCart('OVERSIZED TEE', 149.90)">Adicionar ao Carrinho</button>
+                            <button class="btn btn-secondary" onclick="buyWhatsApp('OVERSIZED TEE', 149.90)">Comprar no WhatsApp</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card fade-in">
+                    <div class="product-image">
+                        🧥
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">HOODIE ESSENTIAL</h3>
+                        <div class="product-price">R$ 249,90</div>
+                        <p class="product-description">Moletom com capuz, corte moderno e acabamento premium. Ideal para o streetwear.</p>
+                        <div class="product-buttons">
+                            <button class="btn btn-primary" onclick="addToCart('HOODIE ESSENTIAL', 249.90)">Adicionar ao Carrinho</button>
+                            <button class="btn btn-secondary" onclick="buyWhatsApp('HOODIE ESSENTIAL', 249.90)">Comprar no WhatsApp</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card fade-in">
+                    <div class="product-image">
+                        👖
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">CARGO PANTS</h3>
+                        <div class="product-price">R$ 199,90</div>
+                        <p class="product-description">Calça cargo com múltiplos bolsos e ajuste perfeito. Material resistente e confortável.</p>
+                        <div class="product-buttons">
+                            <button class="btn btn-primary" onclick="addToCart('CARGO PANTS', 199.90)">Adicionar ao Carrinho</button>
+                            <button class="btn btn-secondary" onclick="buyWhatsApp('CARGO PANTS', 199.90)">Comprar no WhatsApp</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card fade-in">
+                    <div class="product-image">
+                        🧢
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">SNAPBACK CLASSIC</h3>
+                        <div class="product-price">R$ 89,90</div>
+                        <p class="product-description">Boné snapback com bordado exclusivo. Aba reta e ajuste perfeito.</p>
+                        <div class="product-buttons">
+                            <button class="btn btn-primary" onclick="addToCart('SNAPBACK CLASSIC', 89.90)">Adicionar ao Carrinho</button>
+                            <button class="btn btn-secondary" onclick="buyWhatsApp('SNAPBACK CLASSIC', 89.90)">Comprar no WhatsApp</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT SECTION -->
+        <section id="about" class="about-section">
+            <div class="about-content">
+                <h2 class="section-title">SOBRE A VXNT</h2>
+                <p class="about-text">
+                    Nascemos da paixão pela cultura urbana e pelo streetwear autêntico. 
+                    Nossa missão é criar peças que representem a essência da rua, 
+                    com qualidade premium e designs únicos que fazem você se destacar.
+                </p>
+                <div class="features">
+                    <div class="feature">
+                        <div class="feature-icon">🎯</div>
+                        <h3 class="feature-title">EXCLUSIVIDADE</h3>
+                        <p class="feature-text">Peças limitadas e designs únicos</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">✨</div>
+                        <h3 class="feature-title">QUALIDADE</h3>
+                        <p class="feature-text">Materiais premium e acabamento perfeito</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🚀</div>
+                        <h3 class="feature-title">ENTREGA RÁPIDA</h3>
+                        <p class="feature-text">Envio expresso para todo o Brasil</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🔄</div>
+                        <h3 class="feature-title">TROCA FÁCIL</h3>
+                        <p class="feature-text">30 dias para trocar sem complicação</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer id="contact" class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>CONTATO</h3>
+                    <p>📱 (48) 99999-9999</p>
+                    <p>📧 contato@supplystore.com</p>
+                    <p>📍 Porto Belo, Santa Catarina</p>
+                    <p>⏰ Seg-Sex: 9h às 18h</p>
+                </div>
+                <div class="footer-section">
+                    <h3>ATENDIMENTO</h3>
+                    <p>Central de Ajuda</p>
+                    <p>Política de Troca</p>
+                    <p>Prazo de Entrega</p>
+                    <p>Formas de Pagamento</p>
+                </div>
+                <div class="footer-section">
+                    <h3>REDES SOCIAIS</h3>
+                    <div class="social-links">
+                        <a href="#" class="social-link">IG</a>
+                        <a href="#" class="social-link">TT</a>
+                        <a href="#" class="social-link">FB</a>
+                        <a href="#" class="social-link">YT</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 SUPPLY STORE. Todos os direitos reservados.</p>
+            </div>
+        </footer>
+
+        <!-- MODAL CARRINHO -->
+        <div id="cart-modal" class="modal">
+            <div class="modal-content">
+                <span class="modal-close" onclick="closeModal()">&times;</span>
+                <h3>SEU CARRINHO</h3>
+                <div id="cart-items"></div>
+                <div id="cart-total"></div>
+                <button class="btn btn-primary" onclick="finalizePurchase()" style="margin-top: 20px; width: 100%;">
+                    Finalizar Compra
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+
+        // SMOOTH SCROLL
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+        });
+
+        // FADE IN ANIMATION
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.8s ease';
+            observer.observe(el);
+        });
+
+        // CART FUNCTIONS
+        function addToCart(productName, price) {
+            cart.push({name: productName, price: price});
+            updateCartCount();
+            
+            // Feedback visual
+            event.target.style.background = '#4CAF50';
+            event.target.textContent = '✓ ADICIONADO';
+            
+            setTimeout(() => {
+                event.target.style.background = '#fff';
+                event.target.textContent = 'ADICIONAR AO CARRINHO';
+            }, 2000);
+        }
+
+        function updateCartCount() {
+            const cartCount = document.getElementById('cart-count');
+            if (cart.length > 0) {
+                cartCount.textContent = cart.length;
+                cartCount.style.display = 'flex';
+            } else {
+                cartCount.style.display = 'none';
+            }
+        }
+
+        function showCart() {
+            if (cart.length === 0) {
+                alert('Seu carrinho está vazio!');
+                return;
+            }
+            
+            const modal = document.getElementById('cart-modal');
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            
+            let html = '';
+            let total = 0;
+            
+            cart.forEach((item, index) => {
+                html += `
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <span>${item.name}</span>
+                        <span>R$ ${item.price.toFixed(2)}</span>
+                    </div>
+                `;
+                total += item.price;
+            });
+            
+            cartItems.innerHTML = html;
+            cartTotal.innerHTML = `<div style="font-size: 18px; font-weight: 600; margin-top: 20px;">Total: R$ ${total.toFixed(2)}</div>`;
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('cart-modal').style.display = 'none';
+        }
+
+        function buyWhatsApp(productName, price) {
+            const message = `Olá! Tenho interesse no produto:\n\n*${productName}*\nPreço: R$ ${price.toFixed(2)}\n\nPoderia me dar mais informações?`;
+            const whatsappUrl = `https://wa.me/5548999999999?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function finalizePurchase() {
+            let message = 'Olá! Gostaria de finalizar minha compra:\n\n';
+            let total = 0;
+            
+            cart.forEach((item, index) => {
+                message += `${index + 1}. *${item.name}* - R$ ${item.price.toFixed(2)}\n`;
+                total += item.price;
+            });
+            
+            message += `\n*Total: R$ ${total.toFixed(2)}*\n\nPoderia me ajudar com o pagamento e entrega?`;
+            
+            const whatsappUrl = `https://wa.me/5548999999999?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+            
+            closeModal();
+        }
+
+        // CLOSE MODAL ON OUTSIDE CLICK
+        window.onclick = function(event) {
+            const modal = document.getElementById('cart-modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
